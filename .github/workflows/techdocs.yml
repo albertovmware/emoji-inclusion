@@ -11,9 +11,8 @@ jobs:
 
     env:
       TECHDOCS_S3_BUCKET_NAME: ${{ secrets.TECHDOCS_S3_BUCKET_NAME }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
       ENTITY_NAMESPACE: 'default'
     steps:
       - name: Checkout code
@@ -44,5 +43,5 @@ jobs:
 
             echo "Docs file: $f Dir: $file_dir Catalog file: $catalog_file Kind: $entity_kind Name: $entity_name"
             techdocs-cli generate --no-docker --source-dir ${file_dir}/ --output-dir ${file_dir}/site
-            techdocs-cli publish --publisher-type awsS3 --storage-name $TECHDOCS_S3_BUCKET_NAME --entity $ENTITY_NAMESPACE/$entity_kind/$entity_name --directory ${file_dir}/site 
+            techdocs-cli publish --publisher-type googleGcs --storage-name $TECHDOCS_S3_BUCKET_NAME --entity $ENTITY_NAMESPACE/$entity_kind/$entity_name --directory ${file_dir}/site 
           done
